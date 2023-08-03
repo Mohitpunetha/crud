@@ -82,7 +82,7 @@ const Alter = () => {
             style={{ maxWidth: "300px", marginTop: "10px" }}
           />
         ))}
-        <div className="d-flex justify-content-between ">
+        <div className="d-flex justify-content-between">
       <button className="btn btn-primary text-center" onClick={(e) => submit(e)}>Submit</button>
 
       <button className='btn btn-primary text-center' onClick={emailSend}>Send E-mail</button>
