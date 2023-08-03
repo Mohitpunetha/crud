@@ -9,6 +9,8 @@ const SECRET_KEY=process.env.SECRET_KEY
 const nodemailer=require("nodemailer")
 const {base64}=require("js-base64")
 const { validationResult } = require('express-validator');
+const {S3Client,GetObjectCommand}=require("@aws-sdk/client-s3");
+const { getSignedUrl } = require("@aws-sdk/s3-request-presigner");
 module.exports.getdata=async (req,res)=>{
    let userData=await alldatas.alldata()
 //    let userProfile = await userManager.getUserProfile(searchQuery);
@@ -177,6 +179,7 @@ module.exports.signin = async(req,res)=>{
 async function generateOTP() {
     return Math.floor(100000 + Math.random() * 900000); 
   }
+  //this is to be distributed in manager and controller
 
     module.exports.mail=async(req,res)=>{
     const transporter = nodemailer.createTransport({
@@ -193,7 +196,7 @@ async function generateOTP() {
 
     const message={
         from: '<mohitpunetha98@gmail.com>',                 
-        to: "yumi92172@ebrius.net",                    
+        to: "1000015779@dit.edu.in",                    
         subject: "Hello ✔",                                  
         text: `your otp is {otp}`, 
         html: `<b>Your otp is ${otp}</b>`,                 
@@ -209,4 +212,38 @@ async function generateOTP() {
     });
     }
 
+ 
+     const s3client= new S3Client({
+            region:"ap-south-1",
+            credentials:{
+                accessKeyId:"AKIAUPSHE4SKWTFZ2RF3",
+                secretAccessKey:"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"    
+            }
+        })
+    
+    async function getObjectUrl(key){
+        const command=GetObjectCommand({
+            Bucket:"survey-platform",
+            key:key
+        })
+        const url=await getSignedUrl(s3client,command)
+        return url 
+
+    }
+
+    module.exports.getDetails=async(req,res)=>{
+        try {
+            const url = await getObjectUrl('filename');
+            console.log(url);
+            // Do something with the signed URL
+            res.status(200).json({ url:url });
+          } catch (error) {
+            console.error('Error getting object URL:', error);
+            res.status(500).json({ error: 'Error getting object URL' });
+          }
+    }
+
+
+
+   
 
