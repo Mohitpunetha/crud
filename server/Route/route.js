@@ -52,4 +52,5 @@ router.get("/FirstletterA/alldata", allcalling.firstNameData);
 router.get("/maledata/alldata", allcalling.malegender);
 router.get("/query/alldata", allcalling.Querydata);
 
+
 module.exports = router;

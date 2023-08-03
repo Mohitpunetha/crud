@@ -216,16 +216,12 @@ async function generateOTP() {
      const s3client= new S3Client({
             region:"ap-south-1",
             credentials:{
-                accessKeyId:"AKIAUPSHE4SKWTFZ2RF3",
-                secretAccessKey:"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"    
+               
             }
         })
     
     async function getObjectUrl(key){
-        const command=GetObjectCommand({
-            Bucket:"survey-platform",
-            key:key
-        })
+    
         const url=await getSignedUrl(s3client,command)
         return url 
 
