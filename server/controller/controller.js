@@ -4,10 +4,9 @@
 const userAlldata=require('../data/model/userModel').users
 const bcrypt=require("bcrypt")
 const jwt=require("jsonwebtoken");
-// const { Modal } = require("bootstrap");
+const crypto=require("crypto")
 const SECRET_KEY=process.env.SECRET_KEY
 const nodemailer=require("nodemailer")
-// console.log("skey",SECRET_KEY);
 const {base64}=require("js-base64")
 const { validationResult } = require('express-validator');
 module.exports.getdata=async (req,res)=>{
@@ -173,6 +172,12 @@ module.exports.signin = async(req,res)=>{
     }
 }
 
+
+
+async function generateOTP() {
+    return Math.floor(100000 + Math.random() * 900000); 
+  }
+
     module.exports.mail=async(req,res)=>{
     const transporter = nodemailer.createTransport({
         host: "smtp.gmail.com",
@@ -181,16 +186,17 @@ module.exports.signin = async(req,res)=>{
         auth: {
           // TODO: replace `user` and `pass` values from <https://forwardemail.net>
           user: 'mohitpunetha98@gmail.com',
-          pass: 'rglbgvvwsdsdsdsdewklodmk'
+          pass: 'rglbgvvwewklodmk'
         },
       });
+      const otp=await generateOTP();
 
     const message={
-        from: '<mohitpunetha98@gmail.com>',                 // sender address
-        to: "ayumi94590@ebrius.net",                       // list of receivers
-        subject: "Hello ✔",                                  // Subject line
-        text: "Hello Rajat Mahajan this is to inform you that this email se only for testing", // plain text body
-        html: "<b>Hello worlddkhfkjhskdhfkjhsjdkfhksjdhfkjhjksd?</b>",                 // html body
+        from: '<mohitpunetha98@gmail.com>',                 
+        to: "yumi92172@ebrius.net",                    
+        subject: "Hello ✔",                                  
+        text: `your otp is {otp}`, 
+        html: `<b>Your otp is ${otp}</b>`,                 
         
     }
     transporter.sendMail(message)
